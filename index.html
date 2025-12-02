@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belajar Hiragana & Katakana - RPL Ang 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{line-height:1.6;background:#f4f4f4;color:#333;}
+header{background:#4a90e2;color:white;padding:1rem 0;}
+header h1{text-align:center;font-weight:700;font-size:1.6rem;}
+nav{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;}
+nav a{text-decoration:none;color:white;font-weight:600;transition:0.3s;font-size:0.9rem;}
+nav a:hover{color:#ffdd59;}
+section{padding:2rem 1rem;}
+.section-title{text-align:center;margin-bottom:1.5rem;font-size:1.6rem;font-weight:700;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:1rem;}
+.card{background:white;border-radius:15px;padding:1rem;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);transition:0.3s;font-size:0.9rem;}
+.card h3{font-size:1.2rem;margin-bottom:0.5rem;}
+.card p{margin:0.2rem 0;}
+.card:hover{transform:translateY(-5px);box-shadow:0 6px 15px rgba(0,0,0,0.2);}
+.btn{display:inline-block;padding:0.5rem 1rem;border-radius:50px;background:#4a90e2;color:white;font-weight:600;text-decoration:none;cursor:pointer;transition:0.3s;margin-top:0.5rem;font-size:0.9rem;}
+.btn:hover{background:#357ABD;}
+.quiz-section{text-align:center;}
+.quiz-options{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-top:1rem;}
+.quiz-options button{padding:0.4rem 0.8rem;border:none;border-radius:50px;background:#50c878;color:white;cursor:pointer;font-weight:600;transition:0.3s;font-size:0.9rem;}
+.quiz-options button:hover{background:#3da765;}
+#quiz-result{margin-top:1rem;font-weight:600;font-size:1rem;}
+#quiz-score{font-weight:600;margin-top:0.5rem;}
+footer{text-align:center;padding:1rem 0;background:#333;color:white;margin-top:2rem;font-size:0.9rem;}
+
+/* ===== MEDIA QUERIES ===== */
+@media (max-width:768px){
+  header h1{font-size:1.4rem;}
+  nav a{font-size:0.85rem;}
+  .section-title{font-size:1.4rem;}
+  .card h3{font-size:1rem;}
+  .card{padding:0.8rem;}
+  .btn{padding:0.4rem 0.8rem;font-size:0.85rem;}
+  .quiz-options button{padding:0.3rem 0.6rem;font-size:0.85rem;}
+}
+
+@media (max-width:480px){
+  .grid{grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:0.7rem;}
+  header h1{font-size:1.2rem;}
+  .section-title{font-size:1.2rem;}
+  .card h3{font-size:0.95rem;}
+  .card{padding:0.6rem;}
+  .btn{padding:0.3rem 0.7rem;font-size:0.8rem;}
+  .quiz-options button{padding:0.3rem 0.6rem;font-size:0.8rem;}
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>Belajar Hiragana & Katakana</h1>
+  <nav>
+    <a href="#hiragana">Hiragana</a>
+    <a href="#katakana">Katakana</a>
+    <a href="#kosakata">Kosakata</a>
+    <a href="#percakapan">Percakapan</a>
+    <a href="#quiz">Quiz</a>
+  </nav>
+</header>
+
+<section id="hiragana">
+  <h2 class="section-title">Huruf Hiragana</h2>
+  <div class="grid" id="grid-hiragana"></div>
+</section>
+
+<section id="katakana">
+  <h2 class="section-title">Huruf Katakana</h2>
+  <div class="grid" id="grid-katakana"></div>
+</section>
+
+<section id="kosakata">
+  <h2 class="section-title">Kosakata Dasar</h2>
+  <div class="grid" id="grid-kosakata"></div>
+</section>
+
+<section id="percakapan">
+  <h2 class="section-title">Percakapan Sederhana</h2>
+  <div class="grid" id="grid-percakapan"></div>
+</section>
+
+<section id="quiz" class="quiz-section">
+  <h2 class="section-title">Quiz Interaktif</h2>
+  <div style="margin-bottom:1rem;">
+    <button class="btn" onclick="startQuiz('hiragana')">Hiragana</button>
+    <button class="btn" onclick="startQuiz('katakana')">Katakana</button>
+    <button class="btn" onclick="startQuiz('kosakata')">Kosakata</button>
+    <button class="btn" onclick="startQuiz('percakapan')">Percakapan</button>
+  </div>
+  <p id="quiz-question" style="font-size:1.2rem;font-weight:600;"></p>
+  <div class="quiz-options" id="quiz-options"></div>
+  <p id="quiz-result"></p>
+  <button class="btn" onclick="nextQuestion()">Next</button>
+  <p id="quiz-score" style="font-weight:600;margin-top:1rem;"></p>
+</section>
+
+<footer>
+  &copy; BELAJAR HIRAKANA BY RPL ANGKATAN 07
+</footer>
+
+<script>
+// ===== DATA =====
+// Hiragana lengkap 46 huruf dasar
+const HIRAGANA = [
+['あ','a'],['い','i'],['う','u'],['え','e'],['お','o'],
+['か','ka'],['き','ki'],['く','ku'],['け','ke'],['こ','ko'],
+['さ','sa'],['し','shi'],['す','su'],['せ','se'],['そ','so'],
+['た','ta'],['ち','chi'],['つ','tsu'],['て','te'],['と','to'],
+['な','na'],['に','ni'],['ぬ','nu'],['ね','ne'],['の','no'],
+['は','ha'],['ひ','hi'],['ふ','fu'],['へ','he'],['ほ','ho'],
+['ま','ma'],['み','mi'],['む','mu'],['め','me'],['も','mo'],
+['や','ya'],['ゆ','yu'],['よ','yo'],
+['ら','ra'],['り','ri'],['る','ru'],['れ','re'],['ろ','ro'],
+['わ','wa'],['を','wo'],['ん','n']
+];
+
+// Katakana lengkap 46 huruf dasar
+const KATAKANA = [
+['ア','a'],['イ','i'],['ウ','u'],['エ','e'],['オ','o'],
+['カ','ka'],['キ','ki'],['ク','ku'],['ケ','ke'],['コ','ko'],
+['サ','sa'],['シ','shi'],['ス','su'],['セ','se'],['ソ','so'],
+['タ','ta'],['チ','chi'],['ツ','tsu'],['テ','te'],['ト','to'],
+['ナ','na'],['ニ','ni'],['ヌ','nu'],['ネ','ne'],['ノ','no'],
+['ハ','ha'],['ヒ','hi'],['フ','fu'],['ヘ','he'],['ホ','ho'],
+['マ','ma'],['ミ','mi'],['ム','mu'],['メ','me'],['モ','mo'],
+['ヤ','ya'],['ユ','yu'],['ヨ','yo'],
+['ラ','ra'],['リ','ri'],['ル','ru'],['レ','re'],['ロ','ro'],
+['ワ','wa'],['ヲ','wo'],['ン','n']
+];
+
+// Kosakata lebih banyak
+const KOSAKATA = [
+{jp:'ねこ',romaji:'neko',artinya:'Kucing'},
+{jp:'いぬ',romaji:'inu',artinya:'Anjing'},
+{jp:'さかな',romaji:'sakana',artinya:'Ikan'},
+{jp:'たべる',romaji:'taberu',artinya:'Makan'},
+{jp:'みず',romaji:'mizu',artinya:'Air'},
+{jp:'がっこう',romaji:'gakkou',artinya:'Sekolah'},
+{jp:'ほん',romaji:'hon',artinya:'Buku'},
+{jp:'くるま',romaji:'kuruma',artinya:'Mobil'},
+{jp:'じてんしゃ',romaji:'jitensha',artinya:'Sepeda'},
+{jp:'ともだち',romaji:'tomodachi',artinya:'Teman'},
+{jp:'やさい',romaji:'yasai',artinya:'Sayur'},
+{jp:'くだもの',romaji:'kudamono',artinya:'Buah'},
+{jp:'あさ',romaji:'asa',artinya:'Pagi'},
+{jp:'よる',romaji:'yoru',artinya:'Malam'},
+{jp:'ひる',romaji:'hiru',artinya:'Siang'},
+{jp:'くうこう',romaji:'kuukou',artinya:'Bandara'},
+{jp:'えき',romaji:'eki',artinya:'Stasiun'},
+{jp:'かいしゃ',romaji:'kaisha',artinya:'Perusahaan'},
+{jp:'てがみ',romaji:'tegami',artinya:'Surat'},
+{jp:'でんわ',romaji:'denwa',artinya:'Telepon'}
+];
+
+// Percakapan sederhana lebih lengkap
+const PERCAKAPAN = [
+{a:'こんにちは',aR:'Konnichiwa',b:'こんにちは',bR:'Konnichiwa'},
+{a:'おげんきですか？',aR:'Ogenki desu ka?',b:'はい、げんきです',bR:'Hai, genki desu'},
+{a:'おはよう',aR:'Ohayou',b:'おはようございます',bR:'Ohayou gozaimasu'},
+{a:'さようなら',aR:'Sayounara',b:'さようなら',bR:'Sayounara'},
+{a:'ありがとう',aR:'Arigatou',b:'どういたしまして',bR:'Dou itashimashite'},
+{a:'すみません',aR:'Sumimasen',b:'はい、なんですか？',bR:'Hai, nan desu ka?'},
+{a:'こんばんは',aR:'Konbanwa',b:'こんばんは',bR:'Konbanwa'},
+{a:'はじめまして',aR:'Hajimemashite',b:'はじめまして',bR:'Hajimemashite'},
+{a:'おやすみ',aR:'Oyasumi',b:'おやすみなさい',bR:'Oyasuminasai'},
+{a:'いただきます',aR:'Itadakimasu',b:'ごちそうさまでした',bR:'Gochisousama deshita'}
+];
+
+// ===== RENDER MATERI =====
+function renderGrid(data,containerId){
+  const container=document.getElementById(containerId);
+  data.forEach(d=>{
+    const div=document.createElement('div');
+    div.className='card';
+    if(Array.isArray(d)) div.innerHTML=`<h3>${d[0]}</h3><p>${d[1]}</p>`;
+    else if(d.jp) div.innerHTML=`<h3>${d.jp}</h3><p>Romaji: ${d.romaji}</p><p>Artinya: ${d.artinya}</p>`;
+    else div.innerHTML=`<p><strong>A:</strong> ${d.a} - ${d.aR}</p><p><strong>B:</strong> ${d.b} - ${d.bR}</p>`;
+    container.appendChild(div);
+  });
+}
+
+renderGrid(HIRAGANA,'grid-hiragana');
+renderGrid(KATAKANA,'grid-katakana');
+renderGrid(KOSAKATA,'grid-kosakata');
+renderGrid(PERCAKAPAN,'grid-percakapan');
+
+// ===== QUIZ =====
+let quizData=[],currentIndex=0,score=0;
+
+function startQuiz(type){
+  score=0;
+  currentIndex=0;
+  if(type==='hiragana') quizData=HIRAGANA.map(h=>({question:h[0],answer:h[1]}));
+  else if(type==='katakana') quizData=KATAKANA.map(k=>({question:k[0],answer:k[1]}));
+  else if(type==='kosakata') quizData=KOSAKATA.map(k=>({question:k.jp,answer:k.romaji}));
+  else if(type==='percakapan') quizData=PERCAKAPAN.map(p=>({question:p.a,answer:p.aR}));
+  quizData.sort(()=>Math.random()-0.5);
+  loadQuestion();
+}
+
+function loadQuestion(){
+  const q=quizData[currentIndex];
+  document.getElementById('quiz-question').textContent=`Tebak: ${q.question}`;
+  const optionsDiv=document.getElementById('quiz-options');
+  optionsDiv.innerHTML='';
+  const opts=[q.answer];
+  while(opts.length<3){
+    const r=quizData[Math.floor(Math.random()*quizData.length)].answer;
+    if(!opts.includes(r)) opts.push(r);
+  }
+  opts.sort(()=>Math.random()-0.5);
+  opts.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.textContent=o;
+    btn.onclick=()=>checkAnswer(o);
+    optionsDiv.appendChild(btn);
+  });
+  document.getElementById('quiz-result').textContent='';
+  document.getElementById('quiz-score').textContent=`Skor: ${score}/${currentIndex}`;
+}
+
+function checkAnswer(ans){
+  const q=quizData[currentIndex];
+  const res=document.getElementById('quiz-result');
+  if(ans===q.answer){
+    res.textContent='Benar! 🎉';
+    res.style.color='green';
+    score++;
+  }else{
+    res.textContent='Salah ❌, jawaban: '+q.answer;
+    res.style.color='red';
+  }
+  document.getElementById('quiz-score').textContent=`Skor: ${score}/${currentIndex+1}`;
+}
+
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex>=quizData.length){
+    alert(`Quiz selesai! Skor akhir: ${score}/${quizData.length}`);
+    currentIndex=0; score=0;
+    document.getElementById('quiz-question').textContent='';
+    document.getElementById('quiz-options').innerHTML='';
+    document.getElementById('quiz-result').textContent='';
+    document.getElementById('quiz-score').textContent='';
+  }else loadQuestion();
+}
+</script>
+
+</body>
+</html>
